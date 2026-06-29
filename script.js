@@ -572,7 +572,7 @@ function renderNetworkView() {
                   dr = Math.sqrt(dx * dx + dy * dy) * 1.5; // multiplier for curve steepness
             
             // Generate a curved arc path
-            return \`M\${d.source.x},\${d.source.y}A\${dr},\${dr} 0 0,1 \${d.target.x},\${d.target.y}\`;
+            return `M${d.source.x},${d.source.y}A${dr},${dr} 0 0,1 ${d.target.x},${d.target.y}`;
         });
 
         node.attr("transform", d => `translate(${Math.max(d.radius, Math.min(width - d.radius, d.x))},${Math.max(d.radius, Math.min(height - d.radius, d.y))})`);
