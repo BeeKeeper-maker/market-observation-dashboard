@@ -58,6 +58,25 @@ const sdProducts = document.getElementById('sd-products');
 
 let activeFilter = 'all';
 let searchQuery = '';
+let currentView = 'map';
+
+// Gallery State
+let currentPhotos = [];
+let currentPhotoIndex = 0;
+
+// Gallery DOM Elements
+const carouselControls = document.getElementById('carousel-controls');
+const carouselIndicators = document.getElementById('carousel-indicators');
+const btnPrevImg = document.getElementById('btn-prev-img');
+const btnNextImg = document.getElementById('btn-next-img');
+
+// Lightbox DOM Elements
+const lightboxOverlay = document.getElementById('lightbox-overlay');
+const lightboxImg = document.getElementById('lightbox-img');
+const lightboxCaption = document.getElementById('lightbox-caption');
+const btnLightboxClose = document.getElementById('btn-lightbox-close');
+const btnLightboxPrev = document.getElementById('btn-lightbox-prev');
+const btnLightboxNext = document.getElementById('btn-lightbox-next');
 
 function createCustomIcon(marketType, isActive = false) {
     const isPerm = marketType.includes("Permanent") || marketType.includes("স্থায়ী");
@@ -237,17 +256,16 @@ function selectMarket(market) {
         remarksSection.style.display = "none";
     }
     
-    if (market.photos && market.photos.length > 0 && market.photos[0].url) {
-        sdImage.src = market.photos[0].url;
-        sdImage.style.display = "block";
-        sdNoImage.style.display = "none";
-        sdImageDesc.textContent = market.photos[0].desc || "";
-        sdImageDesc.style.display = market.photos[0].desc ? "block" : "none";
-    } else {
-        sdImage.style.display = "none";
-        sdNoImage.style.display = "flex";
-        sdImageDesc.style.display = "none";
+    // Setup Photos for Carousel
+    currentPhotos = [];
+    currentPhotoIndex = 0;
+    
+    if (market.photos && market.photos.length > 0) {
+        // Filter out photos that have 'url': NaN
+        currentPhotos = market.photos.filter(p => p.url && !Number.isNaN(p.url));
     }
+    
+    updateCarousel();
     
     sdProducts.innerHTML = "";
     if (market.activities && market.activities.length > 0) {
@@ -482,3 +500,101 @@ selectMarket = function(market) {
 document.addEventListener('DOMContentLoaded', () => {
     renderApp();
 });
+
+// ----------------- GALLERY / CAROUSEL LOGIC -----------------
+function updateCarousel() {
+    if (currentPhotos.length > 0) {
+        const photo = currentPhotos[currentPhotoIndex];
+        sdImage.src = photo.url;
+        sdImage.style.display = 'block';
+        sdNoImage.style.display = 'none';
+        
+        if (photo.desc) {
+            sdImageDesc.textContent = photo.desc;
+            sdImageDesc.style.display = 'block';
+        } else {
+            sdImageDesc.style.display = 'none';
+        }
+        
+        // Setup Controls
+        if (currentPhotos.length > 1) {
+            if(carouselControls) carouselControls.style.display = 'flex';
+            if(carouselIndicators) carouselIndicators.style.display = 'flex';
+            
+            // Build dots
+            if (carouselIndicators) {
+                carouselIndicators.innerHTML = '';
+                currentPhotos.forEach((_, idx) => {
+                    const dot = document.createElement('div');
+                    dot.className = `carousel-dot ${idx === currentPhotoIndex ? 'active' : ''}`;
+                    dot.onclick = (e) => {
+                        e.stopPropagation();
+                        currentPhotoIndex = idx;
+                        updateCarousel();
+                    };
+                    carouselIndicators.appendChild(dot);
+                });
+            }
+        } else {
+            if(carouselControls) carouselControls.style.display = 'none';
+            if(carouselIndicators) carouselIndicators.style.display = 'none';
+        }
+    } else {
+        sdImage.style.display = 'none';
+        sdImageDesc.style.display = 'none';
+        sdNoImage.style.display = 'flex';
+        if(carouselControls) carouselControls.style.display = 'none';
+        if(carouselIndicators) carouselIndicators.style.display = 'none';
+    }
+}
+
+function nextPhoto(e) {
+    if(e) e.stopPropagation();
+    if(currentPhotos.length > 1) {
+        currentPhotoIndex = (currentPhotoIndex + 1) % currentPhotos.length;
+        updateCarousel();
+        if(lightboxOverlay && lightboxOverlay.style.display === 'flex') updateLightbox();
+    }
+}
+
+function prevPhoto(e) {
+    if(e) e.stopPropagation();
+    if(currentPhotos.length > 1) {
+        currentPhotoIndex = (currentPhotoIndex - 1 + currentPhotos.length) % currentPhotos.length;
+        updateCarousel();
+        if(lightboxOverlay && lightboxOverlay.style.display === 'flex') updateLightbox();
+    }
+}
+
+function updateLightbox() {
+    if(currentPhotos.length > 0 && lightboxImg) {
+        lightboxImg.src = currentPhotos[currentPhotoIndex].url;
+        if(lightboxCaption) lightboxCaption.textContent = currentPhotos[currentPhotoIndex].desc || '';
+    }
+}
+
+function openLightbox() {
+    if(currentPhotos.length > 0 && lightboxOverlay) {
+        updateLightbox();
+        lightboxOverlay.style.display = 'flex';
+    }
+}
+
+function closeLightbox() {
+    if(lightboxOverlay) lightboxOverlay.style.display = 'none';
+}
+
+// Event Listeners for Gallery
+if(btnPrevImg) btnPrevImg.addEventListener('click', prevPhoto);
+if(btnNextImg) btnNextImg.addEventListener('click', nextPhoto);
+if(sdImage) sdImage.addEventListener('click', openLightbox);
+
+if(btnLightboxClose) btnLightboxClose.addEventListener('click', closeLightbox);
+if(btnLightboxNext) btnLightboxNext.addEventListener('click', nextPhoto);
+if(btnLightboxPrev) btnLightboxPrev.addEventListener('click', prevPhoto);
+if(lightboxOverlay) {
+    lightboxOverlay.addEventListener('click', (e) => {
+        if(e.target === lightboxOverlay) closeLightbox();
+    });
+}
+// ------------------------------------------------------------

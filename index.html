@@ -70,8 +70,13 @@
                         <span id="sd-type" class="badge badge-type">Type</span>
                     </div>
 
-                    <div class="sidebar-image-container">
+                    <div class="sidebar-image-container carousel-container">
                         <img id="sd-image" src="" alt="Market Photo" style="display: none;">
+                        <div class="carousel-controls" id="carousel-controls" style="display: none;">
+                            <button id="btn-prev-img" class="carousel-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                            <button id="btn-next-img" class="carousel-btn"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                        <div class="carousel-indicators" id="carousel-indicators" style="display: none;"></div>
                         <div id="sd-no-image" class="no-image-placeholder">
                             <i class="fa-regular fa-image"></i>
                             <p>No photo available</p>
@@ -176,6 +181,17 @@
             </div>
         </main>
 
+    </div>
+
+    <!-- Lightbox Gallery Overlay -->
+    <div id="lightbox-overlay" class="lightbox-overlay" style="display: none;">
+        <button id="btn-lightbox-close" class="lightbox-btn close-btn"><i class="fa-solid fa-xmark"></i></button>
+        <button id="btn-lightbox-prev" class="lightbox-btn nav-btn prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="lightbox-content">
+            <img id="lightbox-img" src="" alt="Full Screen Photo">
+            <p id="lightbox-caption" class="lightbox-caption"></p>
+        </div>
+        <button id="btn-lightbox-next" class="lightbox-btn nav-btn next-btn"><i class="fa-solid fa-chevron-right"></i></button>
     </div>
 
     <!-- Scripts -->
