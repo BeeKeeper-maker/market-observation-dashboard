@@ -126,9 +126,14 @@ function renderList(dataToRender) {
         card.className = `market-card ${currentActiveMarket === market.id ? 'active-card' : ''}`;
         card.dataset.id = market.id;
         
+        let validPhotos = [];
+        if (market.photos && market.photos.length > 0) {
+            validPhotos = market.photos.filter(p => p.url && !Number.isNaN(p.url) && typeof p.url === 'string' && p.url.startsWith('assets/images/'));
+        }
+        
         let photoHtml = `<div class="card-img"><i class="fa-solid fa-image"></i></div>`;
-        if (market.photos && market.photos.length > 0 && market.photos[0].url) {
-            photoHtml = `<img src="${market.photos[0].url}" class="card-img" alt="Market">`;
+        if (validPhotos.length > 0) {
+            photoHtml = `<img src="${validPhotos[0].url}" class="card-img" alt="Market">`;
         }
         
         let iconsHtml = '';
@@ -163,7 +168,13 @@ function renderMarkers(dataToRender) {
         
         dataToRender.forEach((market, index) => {
             const isActive = currentActiveMarket === market.id;
-            const markerLayer = L.marker([market.lat, market.lng], {
+            
+            // Generate a deterministic jitter to avoid exact overlapping
+            const seed = market.id;
+            const jitterLat = (Math.sin(seed) * 0.0003); 
+            const jitterLng = (Math.cos(seed) * 0.0003);
+            
+            const markerLayer = L.marker([market.lat + jitterLat, market.lng + jitterLng], {
                 icon: createCustomIcon(market.market_type, isActive),
                 zIndexOffset: isActive ? 9999 : (1000 - index)
             }).addTo(map);
