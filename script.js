@@ -416,7 +416,7 @@ function renderNetworkView() {
     const links = [];
     
     // Root Node
-    nodes.push({ id: 'root', group: 'root', radius: 40, name: "Satkhira", sub: "Market Ecosystem" });
+    nodes.push({ id: 'root', group: 'root', radius: 40, name: "Gopalganj", sub: "Market Ecosystem" });
     
     Object.keys(unionsMap).forEach(union => {
         const unionId = 'union_' + union;
@@ -538,7 +538,7 @@ function renderNetworkView() {
                 <div class="logos-container">
                     <img src="assets/images/partners-logo.png" alt="Partners Logo" class="partners-logo">
                 </div>
-                <span class="badge">Satkhira District</span>
+                <span class="badge">GOPALGANJ DISTRICT</span>
                 <h3>Market System & Value Chain Assessment for (SLPFIVCD-II)</h3>
             </div>
         `);
