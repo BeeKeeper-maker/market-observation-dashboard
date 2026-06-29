@@ -310,7 +310,7 @@ searchInput.addEventListener('input', (e) => {
 });
 
 // View Toggle Logic
-let currentView = 'map'; // 'map' or 'network'
+// 'map' or 'network'
 
 btnMapView.addEventListener('click', () => {
     if(currentView === 'map') return;
