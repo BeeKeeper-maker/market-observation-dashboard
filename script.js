@@ -421,7 +421,7 @@ function renderNetworkView() {
     Object.keys(unionsMap).forEach(union => {
         const unionId = 'union_' + union;
         nodes.push({ id: unionId, group: 'union', radius: 45, name: union, sub: "Union" });
-        links.push({ source: 'root', target: unionId, distance: 350 });
+        links.push({ source: 'root', target: unionId, distance: 250 });
         
         unionsMap[union].forEach(market => {
             nodes.push({ 
@@ -432,7 +432,7 @@ function renderNetworkView() {
                 marketData: market,
                 type: market.market_type 
             });
-            links.push({ source: unionId, target: market.id, distance: 180 });
+            links.push({ source: unionId, target: market.id, distance: 130 });
         });
     });
     
@@ -466,12 +466,12 @@ function renderNetworkView() {
         
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).distance(d => d.distance))
-        .force("charge", d3.forceManyBody().strength(-1500))
+        .force("charge", d3.forceManyBody().strength(-1000))
         .force("center", d3.forceCenter(width / 2, height / 2))
         .force("collide", d3.forceCollide().radius(d => {
-            if(d.group === 'root') return 220;
-            if(d.group === 'union') return 130;
-            return 85;
+            if(d.group === 'root') return 180;
+            if(d.group === 'union') return 100;
+            return 70;
         }).iterations(4));
         
     const link = svg.append("g")
