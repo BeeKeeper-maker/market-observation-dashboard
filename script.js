@@ -474,11 +474,12 @@ function renderNetworkView() {
         }).iterations(3));
         
     const link = svg.append("g")
-        .selectAll("line")
+        .selectAll("path")
         .data(links)
-        .join("line")
+        .join("path")
         .attr("class", d => `link-line ${d.source.group === 'root' ? 'data-flow-primary' : 'data-flow-secondary'}`)
-        .attr("stroke-width", d => d.source.group === 'root' ? 2.5 : 1.5);
+        .attr("stroke-width", d => d.source.group === 'root' ? 3 : 2)
+        .attr("fill", "none");
         
     const node = svg.append("g")
         .selectAll("g")
@@ -487,11 +488,12 @@ function renderNetworkView() {
         .call(drag(simulation));
         
     // Standard Nodes (Unions & Markets)
-    node.filter(d => d.group !== 'root')
-        .append("circle")
+    const marketNodes = node.filter(d => d.group === 'market');
+    const unionNodes = node.filter(d => d.group === 'union');
+
+    marketNodes.append("circle")
         .attr("class", d => {
             let cls = 'node-circle';
-            if (d.group === 'union') cls += ' node-union';
             if (d.group === 'market') {
                 cls += (d.type && (d.type.includes("Permanent") || d.type.includes("স্থায়ী"))) ? ' node-market-perm' : ' node-market-temp';
                 if(currentActiveMarket === d.id) cls += ' node-active';
@@ -500,10 +502,29 @@ function renderNetworkView() {
         })
         .attr("r", d => d.radius)
         .on("click", (event, d) => {
-            if (d.group === 'market') {
-                selectMarket(d.marketData);
-            }
+            selectMarket(d.marketData);
         });
+        
+    // Custom Image Nodes for Unions
+    unionNodes.append("image")
+        .attr("xlink:href", d => {
+            if(d.name.toLowerCase().includes('jalirpar') || d.name.includes('জলিরপাড়')) return 'assets/images/unions/jalirpar.png';
+            if(d.name.toLowerCase().includes('nonikhir') || d.name.includes('ননীক্ষীর')) return 'assets/images/unions/nonikhir.png';
+            return '';
+        })
+        .attr("x", d => -d.radius - 15)
+        .attr("y", d => -d.radius - 15)
+        .attr("width", d => (d.radius + 15) * 2)
+        .attr("height", d => (d.radius + 15) * 2)
+        .attr("class", "union-node-img");
+        
+    // Add glowing border for Union maps
+    unionNodes.append("circle")
+        .attr("class", "node-circle node-union-border")
+        .attr("r", d => d.radius + 15)
+        .attr("fill", "none")
+        .attr("stroke", "#c084fc")
+        .attr("stroke-width", 2);
         
     node.filter(d => d.group !== 'root')
         .append("text")
@@ -526,29 +547,33 @@ function renderNetworkView() {
     // Premium HTML Card for Root Node
     node.filter(d => d.group === 'root')
         .append("g")
-        .attr("transform", "translate(-190, -90)")
+        .attr("transform", "translate(-190, -110)")
         .append("foreignObject")
         .attr("width", 380)
-        .attr("height", 180)
+        .attr("height", 220)
         .append("xhtml:div")
         .attr("class", "d3-root-card")
         .html(d => `
+            <img src="assets/images/unions/muksudpur.png" class="root-map-bg" alt="Map">
             <div class="glow-bg"></div>
             <div class="content">
                 <div class="logos-container">
                     <img src="assets/images/partners-logo.png" alt="Partners Logo" class="partners-logo">
                 </div>
-                <span class="badge">GOPALGANJ DISTRICT</span>
+                <span class="badge">MUKSUDPUR UPAZILA, GOPALGANJ</span>
                 <h3>Market System & Value Chain Assessment for (SLPFIVCD-II)</h3>
             </div>
         `);
         
     simulation.on("tick", () => {
-        link
-            .attr("x1", d => Math.max(d.source.radius, Math.min(width - d.source.radius, d.source.x)))
-            .attr("y1", d => Math.max(d.source.radius, Math.min(height - d.source.radius, d.source.y)))
-            .attr("x2", d => Math.max(d.target.radius, Math.min(width - d.target.radius, d.target.x)))
-            .attr("y2", d => Math.max(d.target.radius, Math.min(height - d.target.radius, d.target.y)));
+        link.attr("d", d => {
+            const dx = d.target.x - d.source.x,
+                  dy = d.target.y - d.source.y,
+                  dr = Math.sqrt(dx * dx + dy * dy) * 1.5; // multiplier for curve steepness
+            
+            // Generate a curved arc path
+            return \`M\${d.source.x},\${d.source.y}A\${dr},\${dr} 0 0,1 \${d.target.x},\${d.target.y}\`;
+        });
 
         node.attr("transform", d => `translate(${Math.max(d.radius, Math.min(width - d.radius, d.x))},${Math.max(d.radius, Math.min(height - d.radius, d.y))})`);
     });
