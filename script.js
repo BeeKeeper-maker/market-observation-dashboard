@@ -179,11 +179,11 @@ function renderMarkers(dataToRender) {
                 zIndexOffset: isActive ? 9999 : (1000 - index)
             }).addTo(map);
             
-            markerLayer.bindTooltip(`<b>${market.name}</b><br>${market.union}`, {
-                direction: 'top',
-                offset: [0, -35],
-                opacity: 0.9,
-                className: 'custom-tooltip'
+            markerLayer.bindTooltip(`<b>${market.name}</b>`, {
+                direction: 'right',
+                permanent: true,
+                offset: [15, 0],
+                className: 'permanent-tooltip'
             });
             
             markerLayer.on('click', () => {
