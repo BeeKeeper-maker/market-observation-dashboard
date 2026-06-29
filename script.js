@@ -155,13 +155,37 @@ function renderList(dataToRender) {
             selectMarket(market);
         });
         
+        card.addEventListener('mouseenter', () => {
+            const m = markers.find(x => x.data.id === market.id);
+            if(m) {
+                const pin = m.layer.getElement().querySelector('.marker-pin');
+                if(pin) pin.classList.add('hover-highlight');
+            }
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            const m = markers.find(x => x.data.id === market.id);
+            if(m) {
+                const pin = m.layer.getElement().querySelector('.marker-pin');
+                if(pin) pin.classList.remove('hover-highlight');
+            }
+        });
+        
         marketListEl.appendChild(card);
     });
 }
 
+// Global to store network line
+let networkLineLayer = null;
+
 function renderMarkers(dataToRender) {
     markers.forEach(m => map.removeLayer(m.layer));
     markers = [];
+    
+    if(networkLineLayer) {
+        map.removeLayer(networkLineLayer);
+        networkLineLayer = null;
+    }
     
     if (dataToRender.length > 0) {
         const latLngs = [];
@@ -200,6 +224,20 @@ function renderMarkers(dataToRender) {
             } else if (latLngs.length === 1) {
                 map.flyTo(latLngs[0], 14, { duration: 2 });
             }
+        }
+        
+        // Draw the Ecosystem Network Line
+        if (latLngs.length > 1) {
+            // Sort by longitude to make a clean path
+            const sortedLatLngs = [...latLngs].sort((a,b) => a[1] - b[1]);
+            networkLineLayer = L.polyline(sortedLatLngs, {
+                color: '#3b82f6',
+                weight: 2,
+                dashArray: '8, 12',
+                opacity: 0.6,
+                lineCap: 'round',
+                className: 'animated-network-line'
+            }).addTo(map);
         }
     }
 }
