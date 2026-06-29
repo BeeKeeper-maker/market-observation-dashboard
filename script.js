@@ -30,6 +30,11 @@ let markers = [];
 let currentActiveMarket = null;
 
 // DOM Elements
+const btnMapView = document.getElementById('btn-map-view');
+const btnNetView = document.getElementById('btn-net-view');
+const mapContainer = document.getElementById('map-container');
+const netContainer = document.getElementById('network-container');
+
 const viewList = document.getElementById('view-list');
 const viewDetail = document.getElementById('view-detail');
 const marketListEl = document.getElementById('market-list');
@@ -280,6 +285,186 @@ searchInput.addEventListener('input', (e) => {
     searchQuery = e.target.value;
     renderApp();
 });
+
+// View Toggle Logic
+let currentView = 'map'; // 'map' or 'network'
+
+btnMapView.addEventListener('click', () => {
+    if(currentView === 'map') return;
+    currentView = 'map';
+    btnMapView.classList.add('active');
+    btnNetView.classList.remove('active');
+    mapContainer.classList.add('active-layer');
+    netContainer.classList.remove('active-layer');
+});
+
+btnNetView.addEventListener('click', () => {
+    if(currentView === 'network') return;
+    currentView = 'network';
+    btnNetView.classList.add('active');
+    btnMapView.classList.remove('active');
+    netContainer.classList.add('active-layer');
+    mapContainer.classList.remove('active-layer');
+    
+    // Render Network View if it hasn't been rendered yet or needs update
+    renderNetworkView();
+});
+
+// D3 Network View Logic
+let networkRendered = false;
+
+function renderNetworkView() {
+    const container = d3.select("#network-container");
+    container.selectAll("*").remove(); // Clear previous
+    
+    const width = container.node().getBoundingClientRect().width;
+    const height = container.node().getBoundingClientRect().height;
+    
+    // Prepare Data Hierarchy
+    const unionsMap = {};
+    marketData.forEach(market => {
+        // Apply current filters to network view as well
+        const matchesFilter = activeFilter === 'all' || market.market_type === activeFilter;
+        const searchLower = searchQuery.toLowerCase();
+        const matchesSearch = market.name.toLowerCase().includes(searchLower) || market.union.toLowerCase().includes(searchLower);
+        
+        if(!matchesFilter || !matchesSearch) return;
+
+        if(!unionsMap[market.union]) {
+            unionsMap[market.union] = [];
+        }
+        unionsMap[market.union].push(market);
+    });
+    
+    const nodes = [];
+    const links = [];
+    
+    // Root Node
+    nodes.push({ id: 'root', group: 'root', radius: 40, name: "Satkhira", sub: "Market Ecosystem" });
+    
+    Object.keys(unionsMap).forEach(union => {
+        const unionId = 'union_' + union;
+        nodes.push({ id: unionId, group: 'union', radius: 25, name: union, sub: "Union" });
+        links.push({ source: 'root', target: unionId, distance: 120 });
+        
+        unionsMap[union].forEach(market => {
+            nodes.push({ 
+                id: market.id, 
+                group: 'market', 
+                radius: 15, 
+                name: market.name,
+                marketData: market,
+                type: market.market_type 
+            });
+            links.push({ source: unionId, target: market.id, distance: 60 });
+        });
+    });
+    
+    const svg = container.append("svg")
+        .attr("width", width)
+        .attr("height", height);
+        
+    const simulation = d3.forceSimulation(nodes)
+        .force("link", d3.forceLink(links).id(d => d.id).distance(d => d.distance))
+        .force("charge", d3.forceManyBody().strength(-300))
+        .force("center", d3.forceCenter(width / 2, height / 2))
+        .force("collide", d3.forceCollide().radius(d => d.radius + 10).iterations(2));
+        
+    const link = svg.append("g")
+        .selectAll("line")
+        .data(links)
+        .join("line")
+        .attr("class", "link-line")
+        .attr("stroke-width", d => d.source.group === 'root' ? 2 : 1);
+        
+    const node = svg.append("g")
+        .selectAll("g")
+        .data(nodes)
+        .join("g")
+        .call(drag(simulation));
+        
+    node.append("circle")
+        .attr("class", d => `node-circle ${d.group === 'market' && currentActiveMarket === d.id ? 'node-active' : ''}`)
+        .attr("r", d => d.radius)
+        .attr("fill", d => {
+            if (d.group === 'root') return "#0f172a";
+            if (d.group === 'union') return "#64748b";
+            if (d.group === 'market') {
+                return (d.type && d.type.includes("Permanent")) ? "#3b82f6" : "#f59e0b";
+            }
+            return "#ccc";
+        })
+        .on("click", (event, d) => {
+            if (d.group === 'market') {
+                selectMarket(d.marketData);
+            }
+        });
+        
+    node.append("text")
+        .attr("class", "node-text")
+        .attr("dy", d => d.group === 'market' ? 25 : 5)
+        .attr("text-anchor", "middle")
+        .text(d => d.name)
+        .attr("fill", d => (d.group === 'root' || d.group === 'union') ? "#fff" : "var(--text-main)");
+        
+    if(nodes.some(d => d.sub)) {
+        node.append("text")
+            .attr("class", "node-text-sub")
+            .attr("dy", 18)
+            .attr("text-anchor", "middle")
+            .text(d => d.sub || "")
+            .attr("fill", d => (d.group === 'root' || d.group === 'union') ? "#cbd5e1" : "var(--text-muted)");
+    }
+        
+    simulation.on("tick", () => {
+        link
+            .attr("x1", d => Math.max(d.source.radius, Math.min(width - d.source.radius, d.source.x)))
+            .attr("y1", d => Math.max(d.source.radius, Math.min(height - d.source.radius, d.source.y)))
+            .attr("x2", d => Math.max(d.target.radius, Math.min(width - d.target.radius, d.target.x)))
+            .attr("y2", d => Math.max(d.target.radius, Math.min(height - d.target.radius, d.target.y)));
+
+        node.attr("transform", d => `translate(${Math.max(d.radius, Math.min(width - d.radius, d.x))},${Math.max(d.radius, Math.min(height - d.radius, d.y))})`);
+    });
+    
+    function drag(simulation) {
+        function dragstarted(event) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            event.subject.fx = event.subject.x;
+            event.subject.fy = event.subject.y;
+        }
+        function dragged(event) {
+            event.subject.fx = event.x;
+            event.subject.fy = event.y;
+        }
+        function dragended(event) {
+            if (!event.active) simulation.alphaTarget(0);
+            event.subject.fx = null;
+            event.subject.fy = null;
+        }
+        return d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended);
+    }
+}
+
+// Modify renderApp to also update network view if active
+const originalRenderApp = renderApp;
+renderApp = function() {
+    originalRenderApp();
+    if(currentView === 'network') {
+        renderNetworkView();
+    }
+};
+
+// Modify selectMarket to also highlight D3 nodes
+const originalSelectMarket = selectMarket;
+selectMarket = function(market) {
+    originalSelectMarket(market);
+    if(currentView === 'network') {
+        d3.selectAll('.node-circle').classed('node-active', d => d.id === market.id);
+    }
+};
 
 // Init
 document.addEventListener('DOMContentLoaded', () => {

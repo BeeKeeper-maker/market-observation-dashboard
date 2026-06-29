@@ -29,6 +29,14 @@
                     </div>
                 </div>
 
+                <!-- View Toggle Switch -->
+                <div class="view-toggle-container">
+                    <div class="view-toggle">
+                        <button id="btn-map-view" class="toggle-btn active"><i class="fa-solid fa-earth-asia"></i> Map View</button>
+                        <button id="btn-net-view" class="toggle-btn"><i class="fa-solid fa-network-wired"></i> Network</button>
+                    </div>
+                </div>
+
                 <div class="search-container">
                     <i class="fa-solid fa-magnifying-glass search-icon"></i>
                     <input type="text" id="search-input" placeholder="Search markets or unions...">
@@ -132,19 +140,27 @@
 
         </aside>
 
-        <!-- Right Map Container -->
-        <main class="map-container">
-            <div id="map"></div>
-            
-            <!-- Floating Map Legend -->
-            <div class="map-legend glass-panel">
-                <h4>Legend</h4>
-                <div class="legend-item">
-                    <span class="legend-color color-permanent"></span> Permanent Market
+        <!-- Right Map / Network Container -->
+        <main class="main-content-area">
+            <!-- Map View -->
+            <div id="map-container" class="view-layer active-layer">
+                <div id="map"></div>
+                
+                <!-- Floating Map Legend -->
+                <div class="map-legend glass-panel">
+                    <h4>Legend</h4>
+                    <div class="legend-item">
+                        <span class="legend-color color-permanent"></span> Permanent Market
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color color-temporary"></span> Temporary Market
+                    </div>
                 </div>
-                <div class="legend-item">
-                    <span class="legend-color color-temporary"></span> Temporary Market
-                </div>
+            </div>
+
+            <!-- Network View -->
+            <div id="network-container" class="view-layer">
+                <!-- D3.js SVG will be injected here -->
             </div>
         </main>
 
@@ -152,6 +168,7 @@
 
     <!-- Scripts -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="data.js"></script>
     <script src="script.js"></script>
 </body>
