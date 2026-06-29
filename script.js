@@ -421,7 +421,7 @@ function renderNetworkView() {
     Object.keys(unionsMap).forEach(union => {
         const unionId = 'union_' + union;
         nodes.push({ id: unionId, group: 'union', radius: 45, name: union, sub: "Union" });
-        links.push({ source: 'root', target: unionId, distance: 220 });
+        links.push({ source: 'root', target: unionId, distance: 350 });
         
         unionsMap[union].forEach(market => {
             nodes.push({ 
@@ -432,7 +432,7 @@ function renderNetworkView() {
                 marketData: market,
                 type: market.market_type 
             });
-            links.push({ source: unionId, target: market.id, distance: 90 });
+            links.push({ source: unionId, target: market.id, distance: 180 });
         });
     });
     
@@ -466,12 +466,13 @@ function renderNetworkView() {
         
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).distance(d => d.distance))
-        .force("charge", d3.forceManyBody().strength(-600))
+        .force("charge", d3.forceManyBody().strength(-1500))
         .force("center", d3.forceCenter(width / 2, height / 2))
         .force("collide", d3.forceCollide().radius(d => {
-            if(d.group === 'root') return 160;
-            return d.radius + 20;
-        }).iterations(3));
+            if(d.group === 'root') return 220;
+            if(d.group === 'union') return 130;
+            return 85;
+        }).iterations(4));
         
     const link = svg.append("g")
         .selectAll("path")
@@ -505,8 +506,9 @@ function renderNetworkView() {
             const color = isPerm ? '#38bdf8' : '#fbbf24';
             const imgSrc = (d.marketData.images && d.marketData.images.length > 0) ? d.marketData.images[0] : '';
             return `
-                <div class="market-badge-icon" style="border-color: ${color}; box-shadow: 0 0 10px ${color}66;">
-                    ${imgSrc ? `<img src="${imgSrc}" class="market-thumb" onerror="this.style.display='none'" />` : `<i class="fa-solid fa-store" style="color: ${color}"></i>`}
+                <div class="market-badge-icon" style="border-color: ${color}; box-shadow: 0 0 10px ${color}66; position: relative;">
+                    <i class="fa-solid fa-store" style="color: ${color}; position: absolute; z-index: 0;"></i>
+                    ${imgSrc ? `<img src="${imgSrc}" class="market-thumb" onerror="this.style.opacity='0'" style="position: relative; z-index: 1;" />` : ``}
                 </div>
                 <div class="market-badge-label">
                     <span class="market-name">${d.name}</span>
