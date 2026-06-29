@@ -525,11 +525,11 @@ function renderNetworkView() {
     
     // Premium HTML Card for Root Node
     node.filter(d => d.group === 'root')
+        .append("g")
+        .attr("transform", "translate(-190, -90)")
         .append("foreignObject")
         .attr("width", 380)
         .attr("height", 180)
-        .attr("x", -190)
-        .attr("y", -90)
         .append("xhtml:div")
         .attr("class", "d3-root-card")
         .html(d => `
