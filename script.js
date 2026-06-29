@@ -421,7 +421,7 @@ function renderNetworkView() {
     Object.keys(unionsMap).forEach(union => {
         const unionId = 'union_' + union;
         nodes.push({ id: unionId, group: 'union', radius: 25, name: union, sub: "Union" });
-        links.push({ source: 'root', target: unionId, distance: 120 });
+        links.push({ source: 'root', target: unionId, distance: 220 });
         
         unionsMap[union].forEach(market => {
             nodes.push({ 
@@ -432,7 +432,7 @@ function renderNetworkView() {
                 marketData: market,
                 type: market.market_type 
             });
-            links.push({ source: unionId, target: market.id, distance: 60 });
+            links.push({ source: unionId, target: market.id, distance: 90 });
         });
     });
     
@@ -466,9 +466,12 @@ function renderNetworkView() {
         
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).distance(d => d.distance))
-        .force("charge", d3.forceManyBody().strength(-400))
+        .force("charge", d3.forceManyBody().strength(-600))
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collide", d3.forceCollide().radius(d => d.radius + 15).iterations(2));
+        .force("collide", d3.forceCollide().radius(d => {
+            if(d.group === 'root') return 160;
+            return d.radius + 20;
+        }).iterations(3));
         
     const link = svg.append("g")
         .selectAll("line")
@@ -483,10 +486,11 @@ function renderNetworkView() {
         .join("g")
         .call(drag(simulation));
         
-    node.append("circle")
+    // Standard Nodes (Unions & Markets)
+    node.filter(d => d.group !== 'root')
+        .append("circle")
         .attr("class", d => {
             let cls = 'node-circle';
-            if (d.group === 'root') cls += ' node-root';
             if (d.group === 'union') cls += ' node-union';
             if (d.group === 'market') {
                 cls += (d.type && (d.type.includes("Permanent") || d.type.includes("স্থায়ী"))) ? ' node-market-perm' : ' node-market-temp';
@@ -501,21 +505,40 @@ function renderNetworkView() {
             }
         });
         
-    node.append("text")
+    node.filter(d => d.group !== 'root')
+        .append("text")
         .attr("class", "node-text")
         .attr("dy", d => d.group === 'market' ? 28 : 5)
         .attr("text-anchor", "middle")
         .text(d => d.name)
-        .attr("fill", d => (d.group === 'root' || d.group === 'union') ? "#ffffff" : "var(--text-main)");
+        .attr("fill", d => d.group === 'union' ? "#ffffff" : "var(--text-main)");
         
-    if(nodes.some(d => d.sub)) {
-        node.append("text")
+    if(nodes.some(d => d.sub && d.group !== 'root')) {
+        node.filter(d => d.group !== 'root')
+            .append("text")
             .attr("class", "node-text-sub")
             .attr("dy", 18)
             .attr("text-anchor", "middle")
             .text(d => d.sub || "")
-            .attr("fill", d => (d.group === 'root' || d.group === 'union') ? "#cbd5e1" : "var(--text-muted)");
+            .attr("fill", d => d.group === 'union' ? "#cbd5e1" : "var(--text-muted)");
     }
+    
+    // Premium HTML Card for Root Node
+    node.filter(d => d.group === 'root')
+        .append("foreignObject")
+        .attr("width", 320)
+        .attr("height", 140)
+        .attr("x", -160)
+        .attr("y", -70)
+        .append("xhtml:div")
+        .attr("class", "d3-root-card")
+        .html(d => `
+            <div class="glow-bg"></div>
+            <div class="content">
+                <span class="badge">Satkhira District</span>
+                <h3>Market System & Value Chain Assessment for (SLPFIVCD-II)</h3>
+            </div>
+        `);
         
     simulation.on("tick", () => {
         link
