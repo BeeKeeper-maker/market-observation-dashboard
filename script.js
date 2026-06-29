@@ -506,7 +506,7 @@ function renderNetworkView() {
             const imgSrc = (d.marketData.images && d.marketData.images.length > 0) ? d.marketData.images[0] : '';
             return `
                 <div class="market-badge-icon" style="border-color: ${color}; box-shadow: 0 0 10px ${color}66;">
-                    ${imgSrc ? \`<img src="\${imgSrc}" class="market-thumb" onerror="this.style.display='none'" />\` : \`<i class="fa-solid fa-store" style="color: \${color}"></i>\`}
+                    ${imgSrc ? `<img src="${imgSrc}" class="market-thumb" onerror="this.style.display='none'" />` : `<i class="fa-solid fa-store" style="color: ${color}"></i>`}
                 </div>
                 <div class="market-badge-label">
                     <span class="market-name">${d.name}</span>
