@@ -441,6 +441,29 @@ function renderNetworkView() {
         .attr("height", "100%")
         .attr("viewBox", `0 0 ${width} ${height}`);
         
+    // SVG Definitions for Premium Gradients
+    const defs = svg.append("defs");
+    
+    // Root Gradient (Cyan)
+    const rootGrad = defs.append("radialGradient").attr("id", "rootGradient");
+    rootGrad.append("stop").attr("offset", "0%").attr("stop-color", "#38bdf8");
+    rootGrad.append("stop").attr("offset", "100%").attr("stop-color", "#0284c7");
+    
+    // Union Gradient (Purple)
+    const unionGrad = defs.append("radialGradient").attr("id", "unionGradient");
+    unionGrad.append("stop").attr("offset", "0%").attr("stop-color", "#c084fc");
+    unionGrad.append("stop").attr("offset", "100%").attr("stop-color", "#7e22ce");
+
+    // Perm Market Gradient (Blue)
+    const permGrad = defs.append("radialGradient").attr("id", "permGradient");
+    permGrad.append("stop").attr("offset", "0%").attr("stop-color", "#60a5fa");
+    permGrad.append("stop").attr("offset", "100%").attr("stop-color", "#2563eb");
+    
+    // Temp Market Gradient (Orange)
+    const tempGrad = defs.append("radialGradient").attr("id", "tempGradient");
+    tempGrad.append("stop").attr("offset", "0%").attr("stop-color", "#fbbf24");
+    tempGrad.append("stop").attr("offset", "100%").attr("stop-color", "#d97706");
+        
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).distance(d => d.distance))
         .force("charge", d3.forceManyBody().strength(-400))
@@ -451,8 +474,8 @@ function renderNetworkView() {
         .selectAll("line")
         .data(links)
         .join("line")
-        .attr("class", d => `link-line ${d.source.group === 'root' ? 'data-flow' : ''}`)
-        .attr("stroke-width", d => d.source.group === 'root' ? 2 : 1.5);
+        .attr("class", d => `link-line ${d.source.group === 'root' ? 'data-flow-primary' : 'data-flow-secondary'}`)
+        .attr("stroke-width", d => d.source.group === 'root' ? 2.5 : 1.5);
         
     const node = svg.append("g")
         .selectAll("g")
@@ -464,18 +487,14 @@ function renderNetworkView() {
         .attr("class", d => {
             let cls = 'node-circle';
             if (d.group === 'root') cls += ' node-root';
-            if (d.group === 'market' && currentActiveMarket === d.id) cls += ' node-active';
+            if (d.group === 'union') cls += ' node-union';
+            if (d.group === 'market') {
+                cls += (d.type && (d.type.includes("Permanent") || d.type.includes("স্থায়ী"))) ? ' node-market-perm' : ' node-market-temp';
+                if(currentActiveMarket === d.id) cls += ' node-active';
+            }
             return cls;
         })
         .attr("r", d => d.radius)
-        .attr("fill", d => {
-            if (d.group === 'root') return "#0f172a";
-            if (d.group === 'union') return "#64748b";
-            if (d.group === 'market') {
-                return (d.type && d.type.includes("Permanent")) ? "#3b82f6" : "#f59e0b";
-            }
-            return "#ccc";
-        })
         .on("click", (event, d) => {
             if (d.group === 'market') {
                 selectMarket(d.marketData);
@@ -484,10 +503,10 @@ function renderNetworkView() {
         
     node.append("text")
         .attr("class", "node-text")
-        .attr("dy", d => d.group === 'market' ? 25 : 5)
+        .attr("dy", d => d.group === 'market' ? 28 : 5)
         .attr("text-anchor", "middle")
         .text(d => d.name)
-        .attr("fill", d => (d.group === 'root' || d.group === 'union') ? "#fff" : "var(--text-main)");
+        .attr("fill", d => (d.group === 'root' || d.group === 'union') ? "#ffffff" : "var(--text-main)");
         
     if(nodes.some(d => d.sub)) {
         node.append("text")

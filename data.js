@@ -60,7 +60,7 @@ const marketData = [
         "women_presence_percent": 20.0,
         "women_vendors_percent": 20.0,
         "storage_facilities": [],
-        "remarks": "ডিম, মাংস বিক্রি হয়ে গেছে",
+        "remarks": "Eggs and meat have been sold out",
         "activities": [
             "Vegetables",
             "Fish",
@@ -104,7 +104,7 @@ const marketData = [
         "women_presence_percent": 40.0,
         "women_vendors_percent": 40.0,
         "storage_facilities": [],
-        "remarks": "দুধ বিক্রি হয়না",
+        "remarks": "Milk is not sold here",
         "activities": [
             "Vegetables",
             "Fish",
@@ -170,7 +170,7 @@ const marketData = [
         "women_presence_percent": 50.0,
         "women_vendors_percent": 40.0,
         "storage_facilities": [],
-        "remarks": "বাজার সংস্কার কাজ চলছে তাই দোকান গুলো অগোছালো",
+        "remarks": "Market renovation is in progress, so the shops are unorganized",
         "activities": [
             "Vegetables",
             "Fish",
