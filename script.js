@@ -526,15 +526,18 @@ function renderNetworkView() {
     // Premium HTML Card for Root Node
     node.filter(d => d.group === 'root')
         .append("foreignObject")
-        .attr("width", 320)
-        .attr("height", 140)
-        .attr("x", -160)
-        .attr("y", -70)
+        .attr("width", 380)
+        .attr("height", 180)
+        .attr("x", -190)
+        .attr("y", -90)
         .append("xhtml:div")
         .attr("class", "d3-root-card")
         .html(d => `
             <div class="glow-bg"></div>
             <div class="content">
+                <div class="logos-container">
+                    <img src="assets/images/partners-logo.png" alt="Partners Logo" class="partners-logo">
+                </div>
                 <span class="badge">Satkhira District</span>
                 <h3>Market System & Value Chain Assessment for (SLPFIVCD-II)</h3>
             </div>

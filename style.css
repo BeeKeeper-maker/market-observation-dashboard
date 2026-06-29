@@ -683,6 +683,25 @@ body {
     gap: 8px;
 }
 
+.logos-container {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+    padding: 6px 12px;
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.partners-logo {
+    max-height: 40px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+}
+
 .d3-root-card .badge {
     background: rgba(56, 189, 248, 0.2);
     color: #38bdf8;
