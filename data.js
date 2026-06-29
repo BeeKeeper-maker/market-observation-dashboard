@@ -69,20 +69,24 @@ const marketData = [
         ],
         "photos": [
             {
-                "url": "https://kf.kobotoolbox.org/api/v2/assets/asTBXxBh58PFCJkHBFpgxm/data/795179070/attachments/attqp5QwY6Ww8nYqiSr2TXcw/",
-                "desc": "সবজি বিক্রেতা"
+                "url": "assets/images/goalgram_bazar/goalgram_bazar_1.jpeg",
+                "desc": "Goalgram Bazar Photo 1"
             },
             {
-                "url": "https://kf.kobotoolbox.org/api/v2/assets/asTBXxBh58PFCJkHBFpgxm/data/795179070/attachments/attsW9zKgjtuJ8XBBYufWVEs/",
-                "desc": "সবজি বিক্রেতা"
+                "url": "assets/images/goalgram_bazar/goalgram_bazar_2.jpeg",
+                "desc": "Goalgram Bazar Photo 2"
             },
             {
-                "url": "https://kf.kobotoolbox.org/api/v2/assets/asTBXxBh58PFCJkHBFpgxm/data/795179070/attachments/attw8dayLRPkoPxcB7eVMtHb/",
-                "desc": "সবজি বিক্রেতা"
+                "url": "assets/images/goalgram_bazar/goalgram_bazar_3.jpeg",
+                "desc": "Goalgram Bazar Photo 3"
             },
             {
-                "url": "https://kf.kobotoolbox.org/api/v2/assets/asTBXxBh58PFCJkHBFpgxm/data/795179070/attachments/attDDwpxEzU4GwAZMpHKGJoc/",
-                "desc": "মাছ বিক্রেতা"
+                "url": "assets/images/goalgram_bazar/goalgram_bazar_4.jpeg",
+                "desc": "Goalgram Bazar Photo 4"
+            },
+            {
+                "url": "assets/images/goalgram_bazar/goalgram_bazar_5.jpeg",
+                "desc": "Goalgram Bazar Photo 5"
             }
         ]
     },
