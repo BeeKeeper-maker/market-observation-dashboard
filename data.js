@@ -111,32 +111,44 @@ const marketData = [
         ],
         "photos": [
             {
-                "url": "https://kf.kobotoolbox.org/api/v2/assets/asTBXxBh58PFCJkHBFpgxm/data/795179441/attachments/attBqfJPc7ThGSHuCm6KbCMX/",
-                "desc": "মাছ বিক্রেতা"
+                "url": "assets/images/baby_bazar/baby_bazar_1.jpeg",
+                "desc": "Baby Bazar Photo 1"
             },
             {
-                "url": "https://kf.kobotoolbox.org/api/v2/assets/asTBXxBh58PFCJkHBFpgxm/data/795179441/attachments/attDWsxjuiVun6dARujyxbbZ/",
-                "desc": "মাছ বিক্রেতা"
+                "url": "assets/images/baby_bazar/baby_bazar_10.jpeg",
+                "desc": "Baby Bazar Photo 2"
             },
             {
-                "url": "https://kf.kobotoolbox.org/api/v2/assets/asTBXxBh58PFCJkHBFpgxm/data/795179441/attachments/attwnFP4Pg2FxGtDUwovF6eN/",
-                "desc": "সবজি বিক্রেতা"
+                "url": "assets/images/baby_bazar/baby_bazar_2.jpeg",
+                "desc": "Baby Bazar Photo 3"
             },
             {
-                "url": "https://kf.kobotoolbox.org/api/v2/assets/asTBXxBh58PFCJkHBFpgxm/data/795179441/attachments/attQ3J4qw2KtFfG4jiXgrGyx/",
-                "desc": "সবজি বিক্রেতা"
+                "url": "assets/images/baby_bazar/baby_bazar_3.jpeg",
+                "desc": "Baby Bazar Photo 4"
             },
             {
-                "url": null,
-                "desc": "ডিম বিক্রেতা"
+                "url": "assets/images/baby_bazar/baby_bazar_4.jpeg",
+                "desc": "Baby Bazar Photo 5"
             },
             {
-                "url": null,
-                "desc": "হাঁস বিক্রেতা"
+                "url": "assets/images/baby_bazar/baby_bazar_5.jpeg",
+                "desc": "Baby Bazar Photo 6"
             },
             {
-                "url": null,
-                "desc": "সবজি বিক্রেতা"
+                "url": "assets/images/baby_bazar/baby_bazar_6.jpeg",
+                "desc": "Baby Bazar Photo 7"
+            },
+            {
+                "url": "assets/images/baby_bazar/baby_bazar_7.jpeg",
+                "desc": "Baby Bazar Photo 8"
+            },
+            {
+                "url": "assets/images/baby_bazar/baby_bazar_8.jpeg",
+                "desc": "Baby Bazar Photo 9"
+            },
+            {
+                "url": "assets/images/baby_bazar/baby_bazar_9.jpeg",
+                "desc": "Baby Bazar Photo 10"
             }
         ]
     },
@@ -323,24 +335,44 @@ const marketData = [
         ],
         "photos": [
             {
-                "url": "https://kf.kobotoolbox.org/api/v2/assets/asTBXxBh58PFCJkHBFpgxm/data/795195556/attachments/attyQYs9QfPBFhjw36sdrAie/",
-                "desc": "মাছ বিক্রেতা"
+                "url": "assets/images/baby_bazar/baby_bazar_1.jpeg",
+                "desc": "Baby Bazar Photo 1"
             },
             {
-                "url": "https://kf.kobotoolbox.org/api/v2/assets/asTBXxBh58PFCJkHBFpgxm/data/795195556/attachments/attdAVoadoPUDJUfN83Bg6kv/",
-                "desc": "সবজি বিক্রেতা"
+                "url": "assets/images/baby_bazar/baby_bazar_10.jpeg",
+                "desc": "Baby Bazar Photo 2"
             },
             {
-                "url": "https://kf.kobotoolbox.org/api/v2/assets/asTBXxBh58PFCJkHBFpgxm/data/795195556/attachments/att2hnzhukz8iJjXZfciyyN5/",
-                "desc": "ডিম বিক্রেতা"
+                "url": "assets/images/baby_bazar/baby_bazar_2.jpeg",
+                "desc": "Baby Bazar Photo 3"
             },
             {
-                "url": "https://kf.kobotoolbox.org/api/v2/assets/asTBXxBh58PFCJkHBFpgxm/data/795195556/attachments/attvtbVM2aEBvpvFy62u7T3v/",
-                "desc": "হাঁস বিক্রেতা"
+                "url": "assets/images/baby_bazar/baby_bazar_3.jpeg",
+                "desc": "Baby Bazar Photo 4"
             },
             {
-                "url": "https://kf.kobotoolbox.org/api/v2/assets/asTBXxBh58PFCJkHBFpgxm/data/795195556/attachments/atttWFfodAwznRgYdoUdfRnL/",
-                "desc": "সবজি বিক্রেতা"
+                "url": "assets/images/baby_bazar/baby_bazar_4.jpeg",
+                "desc": "Baby Bazar Photo 5"
+            },
+            {
+                "url": "assets/images/baby_bazar/baby_bazar_5.jpeg",
+                "desc": "Baby Bazar Photo 6"
+            },
+            {
+                "url": "assets/images/baby_bazar/baby_bazar_6.jpeg",
+                "desc": "Baby Bazar Photo 7"
+            },
+            {
+                "url": "assets/images/baby_bazar/baby_bazar_7.jpeg",
+                "desc": "Baby Bazar Photo 8"
+            },
+            {
+                "url": "assets/images/baby_bazar/baby_bazar_8.jpeg",
+                "desc": "Baby Bazar Photo 9"
+            },
+            {
+                "url": "assets/images/baby_bazar/baby_bazar_9.jpeg",
+                "desc": "Baby Bazar Photo 10"
             }
         ]
     }
