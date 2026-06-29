@@ -684,21 +684,23 @@ body {
 }
 
 .logos-container {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 8px;
-    padding: 6px 16px;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 6px;
+    padding: 0;
+    width: 325px;
+    height: 48px;
     margin-bottom: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    overflow: hidden;
 }
 
 .partners-logo {
-    max-height: 50px;
-    width: auto;
-    max-width: 100%;
-    object-fit: contain;
+    width: 334px;
+    height: auto;
+    object-fit: cover;
     display: block;
 }
 
