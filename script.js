@@ -9,10 +9,10 @@ const map = L.map('map', {
 
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-// Premium Map Tile (CartoDB Dark Matter for better focus on data)
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-    subdomains: 'abcd',
+// Premium Map Tile (Google Maps Hybrid for high-detail village relevance)
+L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+    attribution: '&copy; Google Maps',
+    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
     maxZoom: 20
 }).addTo(map);
 
