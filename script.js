@@ -420,7 +420,7 @@ function renderNetworkView() {
     
     Object.keys(unionsMap).forEach(union => {
         const unionId = 'union_' + union;
-        nodes.push({ id: unionId, group: 'union', radius: 25, name: union, sub: "Union" });
+        nodes.push({ id: unionId, group: 'union', radius: 45, name: union, sub: "Union" });
         links.push({ source: 'root', target: unionId, distance: 220 });
         
         unionsMap[union].forEach(market => {
@@ -512,36 +512,42 @@ function renderNetworkView() {
             if(d.name.toLowerCase().includes('nonikhir') || d.name.includes('ননীক্ষীর')) return 'assets/images/unions/nonikhir.png';
             return '';
         })
-        .attr("x", d => -d.radius - 15)
-        .attr("y", d => -d.radius - 15)
-        .attr("width", d => (d.radius + 15) * 2)
-        .attr("height", d => (d.radius + 15) * 2)
+        .attr("x", d => -d.radius - 20)
+        .attr("y", d => -d.radius - 20)
+        .attr("width", d => (d.radius + 20) * 2)
+        .attr("height", d => (d.radius + 20) * 2)
         .attr("class", "union-node-img");
         
-    // Add glowing border for Union maps
-    unionNodes.append("circle")
-        .attr("class", "node-circle node-union-border")
-        .attr("r", d => d.radius + 15)
-        .attr("fill", "none")
-        .attr("stroke", "#c084fc")
-        .attr("stroke-width", 2);
+    // Beautiful Glassmorphism Badge for Unions
+    unionNodes.append("foreignObject")
+        .attr("x", -100)
+        .attr("y", d => d.radius + 15)
+        .attr("width", 200)
+        .attr("height", 60)
+        .append("xhtml:div")
+        .html(d => `
+            <div class="union-badge-container">
+                <div class="union-badge">
+                    <span class="union-badge-name">${d.name}</span>
+                    <span class="union-badge-sub">Union Map</span>
+                </div>
+            </div>
+        `);
         
-    node.filter(d => d.group !== 'root')
-        .append("text")
+    marketNodes.append("text")
         .attr("class", "node-text")
-        .attr("dy", d => d.group === 'market' ? 28 : 5)
+        .attr("dy", 28)
         .attr("text-anchor", "middle")
         .text(d => d.name)
-        .attr("fill", d => d.group === 'union' ? "#ffffff" : "var(--text-main)");
+        .attr("fill", "var(--text-main)");
         
-    if(nodes.some(d => d.sub && d.group !== 'root')) {
-        node.filter(d => d.group !== 'root')
-            .append("text")
+    if(nodes.some(d => d.sub && d.group === 'market')) {
+        marketNodes.append("text")
             .attr("class", "node-text-sub")
             .attr("dy", 18)
             .attr("text-anchor", "middle")
             .text(d => d.sub || "")
-            .attr("fill", d => d.group === 'union' ? "#cbd5e1" : "var(--text-muted)");
+            .attr("fill", "var(--text-muted)");
     }
     
     // Premium HTML Card for Root Node
