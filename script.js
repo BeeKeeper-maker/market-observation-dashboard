@@ -317,8 +317,9 @@ function renderNetworkView() {
     const container = d3.select("#network-container");
     container.selectAll("*").remove(); // Clear previous
     
-    const width = container.node().getBoundingClientRect().width;
-    const height = container.node().getBoundingClientRect().height;
+    const containerNode = container.node();
+    const width = containerNode ? (containerNode.clientWidth || 800) : 800;
+    const height = containerNode ? (containerNode.clientHeight || 600) : 600;
     
     // Prepare Data Hierarchy
     const unionsMap = {};
@@ -361,8 +362,9 @@ function renderNetworkView() {
     });
     
     const svg = container.append("svg")
-        .attr("width", width)
-        .attr("height", height);
+        .attr("width", "100%")
+        .attr("height", "100%")
+        .attr("viewBox", `0 0 ${width} ${height}`);
         
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).distance(d => d.distance))
