@@ -63,6 +63,7 @@ let currentView = 'map';
 // Gallery State
 let currentPhotos = [];
 let currentPhotoIndex = 0;
+let carouselInterval = null;
 
 // Gallery DOM Elements
 const carouselControls = document.getElementById('carousel-controls');
@@ -263,6 +264,8 @@ function selectMarket(market) {
     if (market.photos && market.photos.length > 0) {
         // Filter out photos that have 'url': NaN
         currentPhotos = market.photos.filter(p => p.url && !Number.isNaN(p.url));
+    } else {
+        stopCarouselAutoSlide();
     }
     
     updateCarousel();
@@ -535,9 +538,11 @@ function updateCarousel() {
                     carouselIndicators.appendChild(dot);
                 });
             }
+            startCarouselAutoSlide(); // Start/restart interval
         } else {
             if(carouselControls) carouselControls.style.display = 'none';
             if(carouselIndicators) carouselIndicators.style.display = 'none';
+            stopCarouselAutoSlide();
         }
     } else {
         sdImage.style.display = 'none';
@@ -545,6 +550,27 @@ function updateCarousel() {
         sdNoImage.style.display = 'flex';
         if(carouselControls) carouselControls.style.display = 'none';
         if(carouselIndicators) carouselIndicators.style.display = 'none';
+        stopCarouselAutoSlide();
+    }
+}
+
+function startCarouselAutoSlide() {
+    stopCarouselAutoSlide();
+    if (currentPhotos.length > 1) {
+        carouselInterval = setInterval(() => {
+            // Only auto-slide if lightbox is NOT open
+            if (!lightboxOverlay || lightboxOverlay.style.display !== 'flex') {
+                currentPhotoIndex = (currentPhotoIndex + 1) % currentPhotos.length;
+                updateCarousel();
+            }
+        }, 3000); // 3 seconds
+    }
+}
+
+function stopCarouselAutoSlide() {
+    if (carouselInterval) {
+        clearInterval(carouselInterval);
+        carouselInterval = null;
     }
 }
 
