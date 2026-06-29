@@ -491,16 +491,28 @@ function renderNetworkView() {
     const marketNodes = node.filter(d => d.group === 'market');
     const unionNodes = node.filter(d => d.group === 'union');
 
-    marketNodes.append("circle")
-        .attr("class", d => {
-            let cls = 'node-circle';
-            if (d.group === 'market') {
-                cls += (d.type && (d.type.includes("Permanent") || d.type.includes("স্থায়ী"))) ? ' node-market-perm' : ' node-market-temp';
-                if(currentActiveMarket === d.id) cls += ' node-active';
-            }
-            return cls;
+    // Interactive Market Image Badges
+    marketNodes.append("foreignObject")
+        .attr("x", -40)
+        .attr("y", -30)
+        .attr("width", 80)
+        .attr("height", 90)
+        .style("overflow", "visible")
+        .append("xhtml:div")
+        .attr("class", "market-badge-container")
+        .html(d => {
+            const isPerm = d.type && (d.type.includes("Permanent") || d.type.includes("স্থায়ী"));
+            const color = isPerm ? '#38bdf8' : '#fbbf24';
+            const imgSrc = (d.marketData.images && d.marketData.images.length > 0) ? d.marketData.images[0] : '';
+            return `
+                <div class="market-badge-icon" style="border-color: ${color}; box-shadow: 0 0 10px ${color}66;">
+                    ${imgSrc ? \`<img src="\${imgSrc}" class="market-thumb" onerror="this.style.display='none'" />\` : \`<i class="fa-solid fa-store" style="color: \${color}"></i>\`}
+                </div>
+                <div class="market-badge-label">
+                    <span class="market-name">${d.name}</span>
+                </div>
+            `;
         })
-        .attr("r", d => d.radius)
         .on("click", (event, d) => {
             selectMarket(d.marketData);
         });
@@ -534,21 +546,7 @@ function renderNetworkView() {
             </div>
         `);
         
-    marketNodes.append("text")
-        .attr("class", "node-text")
-        .attr("dy", 28)
-        .attr("text-anchor", "middle")
-        .text(d => d.name)
-        .attr("fill", "var(--text-main)");
-        
-    if(nodes.some(d => d.sub && d.group === 'market')) {
-        marketNodes.append("text")
-            .attr("class", "node-text-sub")
-            .attr("dy", 18)
-            .attr("text-anchor", "middle")
-            .text(d => d.sub || "")
-            .attr("fill", "var(--text-muted)");
-    }
+
     
     // Premium HTML Card for Root Node
     node.filter(d => d.group === 'root')
