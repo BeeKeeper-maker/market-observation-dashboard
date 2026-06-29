@@ -9,7 +9,8 @@ const map = L.map('map', {
 
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+// Premium Map Tile (CartoDB Dark Matter for better focus on data)
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
     subdomains: 'abcd',
     maxZoom: 20
@@ -83,6 +84,10 @@ function renderApp() {
     });
     
     marketCountEl.textContent = filteredData.length;
+    
+    // Update Map Context Overlay
+    const ctxTotal = document.getElementById('ctx-total-markets');
+    if(ctxTotal) ctxTotal.textContent = filteredData.length;
     
     renderList(filteredData);
     renderMarkers(filteredData);
@@ -160,9 +165,9 @@ function renderMarkers(dataToRender) {
         
         if (!currentActiveMarket) {
             if (latLngs.length > 1) {
-                map.fitBounds(L.latLngBounds(latLngs), { padding: [50, 50] });
+                map.flyToBounds(L.latLngBounds(latLngs), { padding: [80, 80], duration: 2 });
             } else if (latLngs.length === 1) {
-                map.flyTo(latLngs[0], 14);
+                map.flyTo(latLngs[0], 14, { duration: 2 });
             }
         }
     }
@@ -368,16 +373,16 @@ function renderNetworkView() {
         
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).distance(d => d.distance))
-        .force("charge", d3.forceManyBody().strength(-300))
+        .force("charge", d3.forceManyBody().strength(-400))
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collide", d3.forceCollide().radius(d => d.radius + 10).iterations(2));
+        .force("collide", d3.forceCollide().radius(d => d.radius + 15).iterations(2));
         
     const link = svg.append("g")
         .selectAll("line")
         .data(links)
         .join("line")
-        .attr("class", "link-line")
-        .attr("stroke-width", d => d.source.group === 'root' ? 2 : 1);
+        .attr("class", d => `link-line ${d.source.group === 'root' ? 'data-flow' : ''}`)
+        .attr("stroke-width", d => d.source.group === 'root' ? 2 : 1.5);
         
     const node = svg.append("g")
         .selectAll("g")
@@ -386,7 +391,12 @@ function renderNetworkView() {
         .call(drag(simulation));
         
     node.append("circle")
-        .attr("class", d => `node-circle ${d.group === 'market' && currentActiveMarket === d.id ? 'node-active' : ''}`)
+        .attr("class", d => {
+            let cls = 'node-circle';
+            if (d.group === 'root') cls += ' node-root';
+            if (d.group === 'market' && currentActiveMarket === d.id) cls += ' node-active';
+            return cls;
+        })
         .attr("r", d => d.radius)
         .attr("fill", d => {
             if (d.group === 'root') return "#0f172a";

@@ -540,34 +540,123 @@ body {
     stroke: #fff;
     stroke-width: 2px;
     cursor: pointer;
-    transition: filter 0.2s;
+    transition: filter 0.3s, transform 0.3s;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
 }
 
 .node-circle:hover {
-    filter: brightness(1.2);
+    filter: brightness(1.2) drop-shadow(0 6px 12px rgba(0,0,0,0.5));
+}
+
+.node-root {
+    animation: rootPulse 3s infinite;
+}
+
+@keyframes rootPulse {
+    0% { filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
+    50% { filter: drop-shadow(0 0 20px rgba(255,255,255,0.6)); }
+    100% { filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
 }
 
 .node-active {
-    stroke: #0f172a;
+    stroke: #ffffff;
     stroke-width: 3px;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.8));
 }
 
 .node-text {
     font-family: 'Inter', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 700;
     pointer-events: none;
     fill: var(--text-main);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
 
 .node-text-sub {
-    font-size: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
     fill: var(--text-muted);
+    pointer-events: none;
 }
 
 .link-line {
-    stroke: #cbd5e1;
-    stroke-opacity: 0.6;
+    stroke: #475569;
+    stroke-opacity: 0.8;
+}
+
+.link-line.data-flow {
+    stroke-dasharray: 5, 5;
+    animation: flow 20s linear infinite;
+}
+
+@keyframes flow {
+    to {
+        stroke-dashoffset: -1000;
+    }
+}
+
+/* Map Context Overlay */
+.map-context-overlay {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    padding: 15px 25px;
+    text-align: center;
+    border-radius: 12px;
+    border-top: 1px solid rgba(255,255,255,0.4);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.85);
+    animation: slideDown 0.6s ease-out forwards;
+}
+
+@keyframes slideDown {
+    from { transform: translate(-50%, -20px); opacity: 0; }
+    to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+.map-context-overlay h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0 0 4px 0;
+}
+
+.map-context-overlay p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.context-stats {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.ctx-stat {
+    display: flex;
+    flex-direction: column;
+}
+
+.ctx-val {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1.1;
+}
+
+.ctx-lbl {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 600;
 }
 
 /* Legend */
@@ -617,50 +706,60 @@ body {
     border: none;
 }
 
+/* Custom Map Markers */
 .marker-pin {
     width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: white;
+    height: 42px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="%23ffffff" d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0z"/></svg>') no-repeat center center;
+    background-size: contain;
+    position: relative;
     display: flex;
     justify-content: center;
-    align-items: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    position: relative;
-    cursor: pointer;
-    transition: transform 0.2s, background 0.2s;
+    padding-top: 6px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
 }
 
 .marker-pin i {
+    font-size: 14px;
     color: white;
-    font-size: 1rem;
+    z-index: 2;
 }
 
-.marker-pin.perm {
-    background: var(--color-perm);
-    border: 2px solid white;
-}
-.marker-pin.temp {
-    background: var(--color-temp);
-    border: 2px solid white;
-}
+.marker-pin.perm { filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.8)); }
+.marker-pin.perm i { color: #3b82f6; }
+.marker-pin.temp { filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.8)); }
+.marker-pin.temp i { color: #f59e0b; }
 
 .marker-pin::after {
     content: '';
     position: absolute;
-    bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 6px solid transparent;
-    border-right: 6px solid transparent;
+    top: 5px;
+    left: 7px;
+    width: 18px;
+    height: 18px;
+    background: white;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.marker-pin.active {
+    transform: scale(1.3) translateY(-5px);
+    z-index: 1000;
+}
+.marker-pin.active.perm { filter: drop-shadow(0 0 15px rgba(59, 130, 246, 1)); }
+.marker-pin.active.temp { filter: drop-shadow(0 0 15px rgba(245, 158, 11, 1)); }
+
+/* Marker Pulse Animation for Active Node */
+@keyframes markerPulse {
+    0% { transform: scale(1.3) translateY(-5px); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+    70% { transform: scale(1.3) translateY(-5px); box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); }
+    100% { transform: scale(1.3) translateY(-5px); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
 }
 
 .marker-pin.perm::after { border-top: 8px solid var(--color-perm); }
 .marker-pin.temp::after { border-top: 8px solid var(--color-temp); }
 
-.marker-pin:hover {
     transform: scale(1.15) translateY(-5px);
 }
 
