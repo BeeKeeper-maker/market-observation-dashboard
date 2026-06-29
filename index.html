@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Observation Dashboard</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Left Sidebar (Master-Detail) -->
+        <aside class="sidebar-left">
+            
+            <!-- List View -->
+            <div id="view-list" class="sidebar-view active">
+                <div class="sidebar-header">
+                    <div class="logo">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                        <div>
+                            <h1>Market Ecosystem</h1>
+                            <p>Satkhira District</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="search-container">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="search-input" placeholder="Search markets or unions...">
+                </div>
+
+                <div class="filter-pills">
+                    <button class="pill active" data-filter="all">All</button>
+                    <button class="pill" data-filter="Permanent Market (স্থায়ী বাজার)">Permanent</button>
+                    <button class="pill" data-filter="Temporary/Haat (অস্থায়ী/হাট)">Temporary</button>
+                </div>
+
+                <div class="stats-bar">
+                    <span id="market-count">0</span> Markets Found
+                </div>
+
+                <div id="market-list" class="market-list">
+                    <!-- Market Cards injected here -->
+                </div>
+            </div>
+
+            <!-- Detail View -->
+            <div id="view-detail" class="sidebar-view">
+                <button id="btn-back" class="btn-back">
+                    <i class="fa-solid fa-arrow-left"></i> Back to List
+                </button>
+                
+                <div class="detail-content">
+                    <div class="detail-header">
+                        <h2 id="sd-name">Market Name</h2>
+                        <span id="sd-union" class="badge">Union</span>
+                        <span id="sd-type" class="badge badge-type">Type</span>
+                    </div>
+
+                    <div class="sidebar-image-container">
+                        <img id="sd-image" src="" alt="Market Photo" style="display: none;">
+                        <div id="sd-no-image" class="no-image-placeholder">
+                            <i class="fa-regular fa-image"></i>
+                            <p>No photo available</p>
+                        </div>
+                        <p id="sd-image-desc" class="image-caption"></p>
+                    </div>
+
+                    <div class="sidebar-stats">
+                        <div class="stat-item">
+                            <i class="fa-solid fa-store text-blue"></i>
+                            <div>
+                                <span class="label">Shops</span>
+                                <span id="sd-shops" class="value">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-calendar-day text-orange"></i>
+                            <div>
+                                <span class="label">Market Day</span>
+                                <span id="sd-day" class="value">-</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-road text-green"></i>
+                            <div>
+                                <span class="label">Road</span>
+                                <span id="sd-road" class="value">-</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-person-dress text-pink"></i>
+                            <div>
+                                <span class="label">Women Visitors</span>
+                                <span id="sd-women" class="value">0%</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-shop-lock text-purple"></i>
+                            <div>
+                                <span class="label">Women Vendors</span>
+                                <span id="sd-women-vendors" class="value">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3><i class="fa-solid fa-boxes-stacked"></i> Storage & Facilities</h3>
+                        <div id="sd-storage" class="products-container">
+                            <!-- Badges injected here -->
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3><i class="fa-solid fa-basket-shopping"></i> Available Products</h3>
+                        <div id="sd-products" class="products-container">
+                            <!-- Badges injected here -->
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-section" id="remarks-section">
+                        <h3><i class="fa-solid fa-comment-dots"></i> Remarks</h3>
+                        <p id="sd-remarks" style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.4;"></p>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Right Map Container -->
+        <main class="map-container">
+            <div id="map"></div>
+            
+            <!-- Floating Map Legend -->
+            <div class="map-legend glass-panel">
+                <h4>Legend</h4>
+                <div class="legend-item">
+                    <span class="legend-color color-permanent"></span> Permanent Market
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color color-temporary"></span> Temporary Market
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
