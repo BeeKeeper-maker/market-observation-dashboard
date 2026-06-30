@@ -420,8 +420,8 @@ function renderNetworkView() {
     
     Object.keys(unionsMap).forEach(union => {
         const unionId = 'union_' + union;
-        nodes.push({ id: unionId, group: 'union', radius: 45, name: union, sub: "Union" });
-        links.push({ source: 'root', target: unionId, distance: 250 });
+        nodes.push({ id: unionId, group: 'union', radius: 110, name: union, sub: "Union" });
+        links.push({ source: 'root', target: unionId, distance: 280 }); // Adjusted to fit in one screen
         
         unionsMap[union].forEach(market => {
             nodes.push({ 
@@ -466,12 +466,31 @@ function renderNetworkView() {
         
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).distance(d => d.distance))
-        .force("charge", d3.forceManyBody().strength(-1000))
+        .force("charge", d3.forceManyBody().strength(d => d.group === 'root' ? -2000 : (d.group === 'union' ? -800 : -400)))
         .force("center", d3.forceCenter(width / 2, height / 2))
+        .force("x", d3.forceX(d => {
+            if(d.group === 'union') {
+                if(d.name.includes('Jalirpar') || d.name.includes('জলিরপাড়')) return width / 2 - 350;
+                if(d.name.includes('Nonikhir') || d.name.includes('ননীক্ষীর')) return width / 2 + 350;
+            }
+            return width / 2;
+        }).strength(d => d.group === 'union' ? 0.3 : 0.05))
+        .force("y", d3.forceY(d => {
+            if(d.group === 'union') {
+                if(d.name.includes('Jalirpar') || d.name.includes('জলিরপাড়')) return height / 2 - 250;
+                if(d.name.includes('Nonikhir') || d.name.includes('ননীক্ষীর')) return height / 2 + 250;
+            }
+            return height / 2;
+        }).strength(d => d.group === 'union' ? 0.3 : 0.05))
+        .force("radial", d3.forceRadial(d => {
+            // Push market nodes to the outer edges to prevent crowding the center
+            if(d.group === 'market') return 500;
+            return 0;
+        }, width / 2, height / 2).strength(d => d.group === 'market' ? 0.8 : 0))
         .force("collide", d3.forceCollide().radius(d => {
-            if(d.group === 'root') return 180;
-            if(d.group === 'union') return 100;
-            return 70;
+            if(d.group === 'root') return 200;
+            if(d.group === 'union') return 120;
+            return 80;
         }).iterations(4));
         
     const link = svg.append("g")
@@ -494,23 +513,34 @@ function renderNetworkView() {
 
     // Interactive Market Image Badges
     marketNodes.append("foreignObject")
-        .attr("x", -40)
-        .attr("y", -30)
-        .attr("width", 80)
-        .attr("height", 90)
+        .attr("x", -70)
+        .attr("y", -50)
+        .attr("width", 140)
+        .attr("height", 100)
         .style("overflow", "visible")
         .append("xhtml:div")
         .attr("class", "market-badge-container")
         .html(d => {
             const isPerm = d.type && (d.type.includes("Permanent") || d.type.includes("স্থায়ী"));
             const color = isPerm ? '#38bdf8' : '#fbbf24';
-            const imgSrc = (d.marketData.images && d.marketData.images.length > 0) ? d.marketData.images[0] : '';
-            return `
+            const photos = d.marketData.photos || [];
+            const displayImages = photos.map(p => p.url).slice(0, 3); // Max 3 images
+            
+            let imagesHtml = '';
+            if (displayImages.length > 0) {
+                imagesHtml = `<div class="market-gallery-preview">` + 
+                    displayImages.map(src => `<img src="${src}" class="gallery-thumb" onerror="this.style.display='none'"/>`).join('') +
+                    `</div>`;
+            } else {
+                imagesHtml = `
                 <div class="market-badge-icon" style="border-color: ${color}; box-shadow: 0 0 10px ${color}66; position: relative;">
                     <i class="fa-solid fa-store" style="color: ${color}; position: absolute; z-index: 0;"></i>
-                    ${imgSrc ? `<img src="${imgSrc}" class="market-thumb" onerror="this.style.opacity='0'" style="position: relative; z-index: 1;" />` : ``}
-                </div>
-                <div class="market-badge-label">
+                </div>`;
+            }
+
+            return `
+                ${imagesHtml}
+                <div class="market-badge-label" style="border-top: 3px solid ${color};">
                     <span class="market-name">${d.name}</span>
                 </div>
             `;
@@ -535,17 +565,15 @@ function renderNetworkView() {
     // Beautiful Glassmorphism Badge for Unions
     unionNodes.append("foreignObject")
         .attr("x", -100)
-        .attr("y", d => d.radius + 15)
+        .attr("y", -30) // Centered directly on the map
         .attr("width", 200)
         .attr("height", 60)
+        .style("pointer-events", "none")
         .append("xhtml:div")
+        .attr("class", "union-badge")
         .html(d => `
-            <div class="union-badge-container">
-                <div class="union-badge">
-                    <span class="union-badge-name">${d.name}</span>
-                    <span class="union-badge-sub">Union Map</span>
-                </div>
-            </div>
+            <div class="union-badge-name">${d.name}</div>
+            <div class="union-badge-sub">UNION MAP</div>
         `);
         
 
@@ -555,29 +583,26 @@ function renderNetworkView() {
     
     rootNode.append("image")
         .attr("xlink:href", "assets/images/unions/muksudpur.png")
-        .attr("x", -250)
-        .attr("y", -280)
-        .attr("width", 500)
-        .attr("height", 500)
+        .attr("x", -320)
+        .attr("y", -320)
+        .attr("width", 640)
+        .attr("height", 640)
         .attr("class", "root-node-img")
         .style("pointer-events", "none");
 
     rootNode.append("g")
-        .attr("transform", "translate(-190, 120)")
+        .attr("transform", "translate(-250, -130)")
         .append("foreignObject")
-        .attr("width", 380)
-        .attr("height", 160)
+        .attr("width", 500)
+        .attr("height", 260)
         .append("xhtml:div")
-        .attr("class", "d3-root-card")
+        .attr("class", "d3-root-content")
         .html(d => `
-            <div class="glow-bg"></div>
-            <div class="content">
-                <div class="logos-container">
-                    <img src="assets/images/partners-logo.png" alt="Partners Logo" class="partners-logo">
-                </div>
-                <span class="badge">MUKSUDPUR UPAZILA, GOPALGANJ</span>
-                <h3>Market System & Value Chain Assessment for (SLPFIVCD-II)</h3>
+            <div class="logos-container">
+                <img src="assets/images/partners-logo.png" alt="Partners Logo" class="partners-logo">
             </div>
+            <span class="badge">MUKSUDPUR UPAZILA, GOPALGANJ</span>
+            <h3>Market System & Value Chain Assessment for (SLPFIVCD-II)</h3>
         `);
         
     simulation.on("tick", () => {
