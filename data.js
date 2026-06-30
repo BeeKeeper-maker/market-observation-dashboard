@@ -25,24 +25,20 @@ const marketData = [
         ],
         "photos": [
             {
-                "url": "https://kf.kobotoolbox.org/api/v2/assets/asTBXxBh58PFCJkHBFpgxm/data/795178320/attachments/attgpGHy4G7aga79Cmh7x4Yk/",
-                "desc": "সবজি বিক্রেতা"
+                "url": "assets/images/nonikhir_bazar/nonikhir_bazar_1.jpeg",
+                "desc": "Nonikhir Bazar Photo 1"
             },
             {
-                "url": "https://kf.kobotoolbox.org/api/v2/assets/asTBXxBh58PFCJkHBFpgxm/data/795178320/attachments/attkQw5bakTA3mgALstddg2w/",
-                "desc": "মাছ বিক্রেতা"
+                "url": "assets/images/nonikhir_bazar/nonikhir_bazar_2.jpeg",
+                "desc": "Nonikhir Bazar Photo 2"
             },
             {
-                "url": "https://kf.kobotoolbox.org/api/v2/assets/asTBXxBh58PFCJkHBFpgxm/data/795178320/attachments/attunVYN7mEobtWk4Jjv3jY7/",
-                "desc": "দুধ বিক্রেতা"
+                "url": "assets/images/nonikhir_bazar/nonikhir_bazar_3.jpeg",
+                "desc": "Nonikhir Bazar Photo 3"
             },
             {
-                "url": "https://kf.kobotoolbox.org/api/v2/assets/asTBXxBh58PFCJkHBFpgxm/data/795178320/attachments/attzzVJvJURCeQHKaWsjZWMB/",
-                "desc": "দুধ বিক্রেতা"
-            },
-            {
-                "url": "https://kf.kobotoolbox.org/api/v2/assets/asTBXxBh58PFCJkHBFpgxm/data/795178320/attachments/attNNVxX6fuCz7mCvT5dYV9f/",
-                "desc": "সবজি বিক্রেতা"
+                "url": "assets/images/nonikhir_bazar/nonikhir_bazar_4.jpeg",
+                "desc": "Nonikhir Bazar Photo 4"
             }
         ]
     },
@@ -60,7 +56,7 @@ const marketData = [
         "women_presence_percent": 20.0,
         "women_vendors_percent": 20.0,
         "storage_facilities": [],
-        "remarks": "Eggs and meat have been sold out",
+        "remarks": "ডিম, মাংস বিক্রি হয়ে গেছে",
         "activities": [
             "Vegetables",
             "Fish",
@@ -91,20 +87,20 @@ const marketData = [
         ]
     },
     {
-        "id": 795179441,
+        "id": 795195556,
         "name": "বেবীর বাজার",
         "union": "Jalirpar (জলিরপাড়)",
-        "lat": 23.2135271,
-        "lng": 89.9649051,
+        "lat": 23.21341521,
+        "lng": 89.96472392,
         "market_day": "Saturday (শনিবার)",
         "market_type": "Permanent Market (স্থায়ী বাজার)",
-        "shops": 120,
+        "shops": 180,
         "road_type": "Brick Soling (ইটের)",
         "road_condition": "Good (ভালো)",
-        "women_presence_percent": 40.0,
-        "women_vendors_percent": 40.0,
+        "women_presence_percent": 30.0,
+        "women_vendors_percent": 30.0,
         "storage_facilities": [],
-        "remarks": "Milk is not sold here",
+        "remarks": "এই বাজারে দুধ বিক্রি হয়না",
         "activities": [
             "Vegetables",
             "Fish",
@@ -170,7 +166,7 @@ const marketData = [
         "women_presence_percent": 50.0,
         "women_vendors_percent": 40.0,
         "storage_facilities": [],
-        "remarks": "Market renovation is in progress, so the shops are unorganized",
+        "remarks": "বাজার সংস্কার কাজ চলছে তাই দোকান গুলো অগোছালো",
         "activities": [
             "Vegetables",
             "Fish",
@@ -232,6 +228,71 @@ const marketData = [
             {
                 "url": "assets/images/bou_bazar/bou_bazar_13.jpeg",
                 "desc": "Bou Bazar Photo 13"
+            }
+        ]
+    },
+    {
+        "id": 795930196,
+        "name": "জলিরপাড় বিকেল বাজার",
+        "union": "Jalirpar (জলিরপাড়)",
+        "lat": 23.2179639,
+        "lng": 89.9734386,
+        "market_day": "Saturday (শনিবার)",
+        "market_type": "Permanent Market (স্থায়ী বাজার)",
+        "shops": 200,
+        "road_type": "Concrete (কংক্রিট) Paved (পাকা)",
+        "road_condition": "Moderate (মাঝারি)",
+        "women_presence_percent": 40.0,
+        "women_vendors_percent": 40.0,
+        "storage_facilities": [],
+        "remarks": "দুধের বাজার নয়",
+        "activities": [],
+        "photos": []
+    },
+    {
+        "id": 795930831,
+        "name": "জলিরপাড় বাজার",
+        "union": "Jalirpar (জলিরপাড়)",
+        "lat": 23.21920336,
+        "lng": 89.97006923,
+        "market_day": "Saturday (শনিবার)",
+        "market_type": "Weekly Hat (সাপ্তাহিক হাট)",
+        "shops": 1500,
+        "road_type": "Paved (পাকা) Brick Soling (ইটের)",
+        "road_condition": "Good (ভালো)",
+        "women_presence_percent": 40.0,
+        "women_vendors_percent": 20.0,
+        "storage_facilities": [],
+        "remarks": "দুধ উঠেনা হাটে ,বৃষ্টির কারনে যাতায়াত সমস্যা",
+        "activities": [],
+        "photos": [
+            {
+                "url": "assets/images/jalirpar_bazar/jalirpar_bazar_1.jpeg",
+                "desc": "Jalirpar Bazar Photo 1"
+            },
+            {
+                "url": "assets/images/jalirpar_bazar/jalirpar_bazar_2.jpeg",
+                "desc": "Jalirpar Bazar Photo 2"
+            },
+            {
+                "url": "assets/images/jalirpar_bazar/jalirpar_bazar_3.jpeg",
+                "desc": "Jalirpar Bazar Photo 3"
+            },
+            {
+                "url": "assets/images/jalirpar_bazar/jalirpar_bazar_4.jpeg",
+                "desc": "Jalirpar Bazar Photo 4"
+            },
+            {
+                "url": "assets/images/jalirpar_bazar/jalirpar_bazar_5.jpeg",
+                "desc": "Jalirpar Bazar Photo 5"
+            },
+            {
+                "url": "assets/images/jalirpar_bazar/jalirpar_bazar_6.jpeg",
+                "desc": "Jalirpar Bazar Photo 6"
+            },
+            {
+                "url": "assets/images/jalirpar_bazar/jalirpar_bazar_7.jpeg",
+                "desc": "Jalirpar Bazar Photo 7"
             }
         ]
     }
