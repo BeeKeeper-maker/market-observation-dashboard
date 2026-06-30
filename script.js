@@ -493,13 +493,6 @@ function renderNetworkView() {
     const unionNodes = node.filter(d => d.group === 'union');
 
     // Interactive Market Image Badges
-    marketNodes.append("text")
-        .attr("class", "node-text")
-        .attr("dy", 28)
-        .attr("text-anchor", "middle")
-        .text(d => d.name)
-        .attr("fill", "#1e293b");
-
     marketNodes.append("foreignObject")
         .attr("x", -40)
         .attr("y", -30)
@@ -562,22 +555,15 @@ function renderNetworkView() {
     
     rootNode.append("image")
         .attr("xlink:href", "assets/images/unions/muksudpur.png")
-        .attr("x", -220)
-        .attr("y", -220)
-        .attr("width", 440)
-        .attr("height", 440)
+        .attr("x", -250)
+        .attr("y", -280)
+        .attr("width", 500)
+        .attr("height", 500)
         .attr("class", "root-node-img")
         .style("pointer-events", "none");
 
-    rootNode.append("text")
-        .attr("class", "node-text-sub")
-        .attr("dy", 18)
-        .attr("text-anchor", "middle")
-        .text(d => d.sub || "")
-        .attr("fill", "#64748b");
-
     rootNode.append("g")
-        .attr("transform", "translate(-190, -80)")
+        .attr("transform", "translate(-190, 120)")
         .append("foreignObject")
         .attr("width", 380)
         .attr("height", 160)
