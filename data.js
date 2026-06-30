@@ -56,7 +56,7 @@ const marketData = [
         "women_presence_percent": 20.0,
         "women_vendors_percent": 20.0,
         "storage_facilities": [],
-        "remarks": "ডিম, মাংস বিক্রি হয়ে গেছে",
+        "remarks": "Eggs and meat have been sold out",
         "activities": [
             "Vegetables",
             "Fish",
@@ -100,7 +100,7 @@ const marketData = [
         "women_presence_percent": 30.0,
         "women_vendors_percent": 30.0,
         "storage_facilities": [],
-        "remarks": "এই বাজারে দুধ বিক্রি হয়না",
+        "remarks": "Milk is not sold here",
         "activities": [
             "Vegetables",
             "Fish",
@@ -166,7 +166,7 @@ const marketData = [
         "women_presence_percent": 50.0,
         "women_vendors_percent": 40.0,
         "storage_facilities": [],
-        "remarks": "বাজার সংস্কার কাজ চলছে তাই দোকান গুলো অগোছালো",
+        "remarks": "Market renovation work is ongoing, so the shops are disorganized",
         "activities": [
             "Vegetables",
             "Fish",
@@ -245,8 +245,15 @@ const marketData = [
         "women_presence_percent": 40.0,
         "women_vendors_percent": 40.0,
         "storage_facilities": [],
-        "remarks": "দুধের বাজার নয়",
-        "activities": [],
+        "remarks": "Not a milk market",
+        "activities": [
+            "Vegetables",
+            "Fish",
+            "Duck",
+            "Chicken",
+            "Egg",
+            "Grocery"
+        ],
         "photos": []
     },
     {
@@ -263,8 +270,15 @@ const marketData = [
         "women_presence_percent": 40.0,
         "women_vendors_percent": 20.0,
         "storage_facilities": [],
-        "remarks": "দুধ উঠেনা হাটে ,বৃষ্টির কারনে যাতায়াত সমস্যা",
-        "activities": [],
+        "remarks": "Milk is not available in the market, transportation problem due to rain",
+        "activities": [
+            "Vegetables",
+            "Fish",
+            "Duck",
+            "Chicken",
+            "Egg",
+            "Grocery"
+        ],
         "photos": [
             {
                 "url": "assets/images/jalirpar_bazar/jalirpar_bazar_1.jpeg",
