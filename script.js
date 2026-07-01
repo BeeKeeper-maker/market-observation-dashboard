@@ -470,21 +470,21 @@ function renderNetworkView() {
         .force("center", d3.forceCenter(width / 2, height / 2))
         .force("x", d3.forceX(d => {
             if(d.group === 'union') {
-                if(d.name.includes('Jalirpar') || d.name.includes('জলিরপাড়')) return width / 2 - 350;
-                if(d.name.includes('Nonikhir') || d.name.includes('ননীক্ষীর')) return width / 2 + 350;
+                if(d.name.includes('Jalirpar') || d.name.includes('জলিরপাড়')) return width / 2 - 280;
+                if(d.name.includes('Nonikhir') || d.name.includes('ননীক্ষীর')) return width / 2 + 280;
             }
             return width / 2;
         }).strength(d => d.group === 'union' ? 0.3 : 0.05))
         .force("y", d3.forceY(d => {
             if(d.group === 'union') {
-                if(d.name.includes('Jalirpar') || d.name.includes('জলিরপাড়')) return height / 2 - 250;
-                if(d.name.includes('Nonikhir') || d.name.includes('ননীক্ষীর')) return height / 2 + 250;
+                if(d.name.includes('Jalirpar') || d.name.includes('জলিরপাড়')) return height / 2 - 180;
+                if(d.name.includes('Nonikhir') || d.name.includes('ননীক্ষীর')) return height / 2 + 180;
             }
             return height / 2;
         }).strength(d => d.group === 'union' ? 0.3 : 0.05))
         .force("radial", d3.forceRadial(d => {
             // Push market nodes to the outer edges to prevent crowding the center
-            if(d.group === 'market') return 500;
+            if(d.group === 'market') return 350;
             return 0;
         }, width / 2, height / 2).strength(d => d.group === 'market' ? 0.8 : 0))
         .force("collide", d3.forceCollide().radius(d => {
