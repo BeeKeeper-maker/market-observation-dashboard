@@ -233,7 +233,7 @@ const marketData = [
     },
     {
         "id": 795930196,
-        "name": "জলিরপাড় বিকেল বাজার",
+        "name": "জলিরপাড় হাট",
         "union": "Jalirpar (জলিরপাড়)",
         "lat": 23.2179639,
         "lng": 89.9734386,
@@ -254,7 +254,16 @@ const marketData = [
             "Egg",
             "Grocery"
         ],
-        "photos": []
+        "photos": [
+            {
+                "url": "assets/images/jalirpar_bazar/jalirpar_bazar_6.jpeg",
+                "desc": "Jalirpar Bazar Photo 6"
+            },
+            {
+                "url": "assets/images/jalirpar_bazar/jalirpar_bazar_7.jpeg",
+                "desc": "Jalirpar Bazar Photo 7"
+            }
+        ]
     },
     {
         "id": 795930831,
@@ -299,14 +308,6 @@ const marketData = [
             {
                 "url": "assets/images/jalirpar_bazar/jalirpar_bazar_5.jpeg",
                 "desc": "Jalirpar Bazar Photo 5"
-            },
-            {
-                "url": "assets/images/jalirpar_bazar/jalirpar_bazar_6.jpeg",
-                "desc": "Jalirpar Bazar Photo 6"
-            },
-            {
-                "url": "assets/images/jalirpar_bazar/jalirpar_bazar_7.jpeg",
-                "desc": "Jalirpar Bazar Photo 7"
             }
         ]
     }
